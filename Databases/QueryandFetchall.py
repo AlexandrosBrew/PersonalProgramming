@@ -1,7 +1,7 @@
 import sqlite3
 
 #Connect to a database
-con = sqlite3.connect('Customer.db')
+con = sqlite3.connect('Databases/Customer.db')
 
 #Create a cursor
 c = con.cursor()
@@ -19,7 +19,7 @@ c.executemany("INSERT INTO customers VALUES (?, ?, ?)", many_customers)
 # c.fetchmany()
 # c.fetchall()
 for i in many_customers:
-    print(c.fetchall())
+    print(c.fetchone())
 
 #Commiting
 con.commit()

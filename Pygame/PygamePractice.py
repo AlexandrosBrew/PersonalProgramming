@@ -1,20 +1,31 @@
-import pygame
-pygame.init()
+import pygame as py
+import os
 
-screen = pygame.display.set_mode([500, 500])
+FPS, WHITE, WIDTH, HEIGHT = 60, (255, 255, 255), 900, 500
+YELLOW_SS_IMG = py.image.load(os.path.join('Assets', 'spaceship_yellow.png'))
+RED_SS_IMG = py.image.load(os.path.join('Assets', 'spaceship_red.png')) 
+WIN = py.display.set_mode((WIDTH, HEIGHT))
+py.display.set_caption("Spaceships")
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    for i in range(500):
-        screen.fill((255, 255, 255))
-        if i != 500:
-            pygame.draw.circle(screen, (0, 0, 255), (250, i), 75)
-        else:
-            break
-        running = False
-        pygame.display.flip()
 
-pygame.quit()
+def draw_window():
+    WIN.fill(WHITE)
+    WIN.blit(YELLOW_SS_IMG, (675, 375))
+    WIN.blit(RED_SS_IMG, (225, 125))
+    py.display.update()
+
+def main():
+    clock = py.time.Clock()
+    run = True
+    while run:
+        clock.tick(FPS)
+        for event in py.event.get():
+            if event.type == py.QUIT:
+                run = False
+
+        draw_window()
+
+    py.quit()
+
+if __name__=="__main__":
+    main()

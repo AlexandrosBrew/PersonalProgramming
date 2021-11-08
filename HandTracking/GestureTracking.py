@@ -21,7 +21,6 @@ while True:
     _, frame = cap.read()
     x, y, c = frame.shape
 
-    
     frame = cv2.flip(frame, 1)
     framergb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     

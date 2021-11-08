@@ -1,153 +1,92 @@
-import mediapipe as mp
 import cv2
 import numpy as np
-import time
 
-ml = 150
-max_x, max_y = 250+ml, 50
-curr_tool = "select tool"
-time_init = True
-rad = 40
-var_inits = False
-thick = 4
-prevx, prevy = 0,0
-
-def getTool(x):
-	if x < 50 + ml:
-		return "line"
-
-	elif x<100 + ml:
-		return "rectangle"
-
-	elif x < 150 + ml:
-		return"draw"
-
-	elif x<200 + ml:
-		return "circle"
-
-	else:
-		return "erase"
-
-def index_raised(yi, y9):
-	if (y9 - yi) > 40:
-		return True
-
-	return False
-
-
-hands = mp.solutions.hands
-hand_landmark = hands.Hands(min_detection_confidence=0.6, min_tracking_confidence=0.6, max_num_hands=1)
-draw = mp.solutions.drawing_utils
-
-tools = cv2.imread("tools.png")
-tools = tools.astype('uint8')
-
-mask = np.ones((480, 640))*255
-mask = mask.astype('uint8')
-
+i = 0
+colors = [(255, 0, 0), (255, 0, 255), (0, 255, 0), (0, 0, 255), (0, 255, 255)]
+color = colors[0]
+min_area = 1000
 cap = cv2.VideoCapture(0)
+width = int(cap.get(3))
+height = int(cap.get(4))
+canvas = np.zeros((height, width, 3), np.uint8)
+lower_bound = np.array([50,100,100])
+upper_bound = np.array([90,255,255])
+kernel = np.ones((10,10), np.uint8)
+previous_center_point = 0
 while True:
-	_, frm = cap.read()
-	frm = cv2.flip(frm, 1)
+    success, frame = cap.read()
+    frame = cv2.flip(frame, 1)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower_bound, upper_bound)
+    mask = cv2.dilate(mask, kernel, iterations=1)
+    contours, h    = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    if len(contours) > 0:
+        
+        # Get the biggest contour from all the detected contours
+        cmax = max(contours, key = cv2.contourArea)
+        # Find the area of the contour
+        area = cv2.contourArea(cmax)
+        # print(area)
+        if area > min_area:
+            # Find center point of the contour
+            M = cv2.moments(cmax)
+            cX = int(M["m10"] / M["m00"])
+            cY = int(M["m01"] / M["m00"])
+        
+            cv2.circle(frame, (cX, cY), 10, (0, 0, 255), 2)
+        
+            if previous_center_point == 0:
+                if cY < 65:
+                    # Clear all
+                    if cX > 20 and cX < 120:
+                        canvas = np.zeros((height, width, 3), np.uint8)
+                    
+                    elif cX > 140 and cX < 220:
+                        color = colors[0]
+                    elif cX > 240 and cX < 320:
+                        color = colors[1]
+                    
+                    elif cX > 340 and cX < 420:
+                        color = colors[2]
+                    
+                    elif cX > 440 and cX < 520:
+                        color = colors[3]
 
-	rgb = cv2.cvtColor(frm, cv2.COLOR_BGR2RGB)
+                    elif cX > 540 and cX < 620:
+                        color = colors[4]
+                    elif cX > 640 and cX < 780:
+                        return_val, image = cap.read()
+                        cv2.imwrite('screenshot'+str(i+1)+'.png', canvas)
+                        i+=1
 
-	op = hand_landmark.process(rgb)
+            if previous_center_point != 0:
+                cv2.line(canvas, previous_center_point, (cX, cY), color, 2)
+            previous_center_point = (cX, cY)
+        else:
+            previous_center_point = 0
+    canvas_gray = cv2.cvtColor(canvas, cv2.COLOR_BGR2GRAY)
+    _, canvas_binary = cv2.threshold(canvas_gray, 20, 255, cv2.THRESH_BINARY_INV)
+    canvas_binary = cv2.cvtColor(canvas_binary, cv2.COLOR_GRAY2BGR)
+    frame = cv2.bitwise_and(frame, canvas_binary)
+    frame = cv2.bitwise_or(frame, canvas)
+    cv2.rectangle(frame, (20,1), (120,65), (122,122,122), -1)
+    cv2.rectangle(frame, (140,1), (220,65), colors[0], -1)
+    cv2.rectangle(frame, (240,1), (320,65), colors[1], -1)
+    cv2.rectangle(frame, (340,1), (420,65), colors[2], -1)
+    cv2.rectangle(frame, (440,1), (520,65), colors[3], -1)
+    cv2.rectangle(frame, (540,1), (620,65), colors[4], -1)
+    cv2.rectangle(frame, (640, 1), (780, 65), (122, 122, 122), -1)
+    cv2.putText(frame, "CLEAR ALL", (30, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "BLUE", (155, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "VIOLET", (255, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "GREEN", (355, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "RED", (465, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "YELLOW", (555, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "SCREENSHOT", (665, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.imshow("Frame", frame)
+    cv2.imshow('Canvas', canvas)
 
-	if op.multi_hand_landmarks:
-		for i in op.multi_hand_landmarks:
-			draw.draw_landmarks(frm, i, hands.HAND_CONNECTIONS)
-			x, y = int(i.landmark[8].x*640), int(i.landmark[8].y*480)
-
-			if x < max_x and y < max_y and x > ml:
-				if time_init:
-					ctime = time.time()
-					time_init = False
-				ptime = time.time()
-
-				cv2.circle(frm, (x, y), rad, (0,255,255), 2)
-				rad -= 1
-
-				if (ptime - ctime) > 0.8:
-					curr_tool = getTool(x)
-					print("your current tool set to : ", curr_tool)
-					time_init = True
-					rad = 40
-			else:
-				time_init = True
-				rad = 40
-
-			if curr_tool == "draw":
-				xi, yi = int(i.landmark[12].x*640), int(i.landmark[12].y*480)
-				y9  = int(i.landmark[9].y*480)
-				if index_raised(yi, y9):
-					cv2.line(mask, (prevx, prevy), (x, y), 0, thick)
-					prevx, prevy = x, y
-				else:
-					prevx = x
-					prevy = y
-
-			elif curr_tool == "line":
-				xi, yi = int(i.landmark[12].x*640), int(i.landmark[12].y*480)
-				y9  = int(i.landmark[9].y*480)
-
-				if index_raised(yi, y9):
-					if not(var_inits):
-						xii, yii = x, y
-						var_inits = True
-					cv2.line(frm, (xii, yii), (x, y), (50,152,255), thick)
-				else:
-					if var_inits:
-						cv2.line(mask, (xii, yii), (x, y), 0, thick)
-						var_inits = False
-
-			elif curr_tool == "rectangle":
-				xi, yi = int(i.landmark[12].x*640), int(i.landmark[12].y*480)
-				y9  = int(i.landmark[9].y*480)
-				if index_raised(yi, y9):
-					if not(var_inits):
-						xii, yii = x, y
-						var_inits = True
-
-					cv2.rectangle(frm, (xii, yii), (x, y), (0,255,255), thick)
-				else:
-					if var_inits:
-						cv2.rectangle(mask, (xii, yii), (x, y), 0, thick)
-						var_inits = False
-
-			elif curr_tool == "circle":
-				xi, yi = int(i.landmark[12].x*640), int(i.landmark[12].y*480)
-				y9  = int(i.landmark[9].y*480)
-				if index_raised(yi, y9):
-					if not(var_inits):
-						xii, yii = x, y
-						var_inits = True
-
-					cv2.circle(frm, (xii, yii), int(((xii-x)**2 + (yii-y)**2)**0.5), (255,255,0), thick)
-				else:
-					if var_inits:
-						cv2.circle(mask, (xii, yii), int(((xii-x)**2 + (yii-y)**2)**0.5), (0,255,0), thick)
-						var_inits = False
-
-			elif curr_tool == "erase":
-				xi, yi = int(i.landmark[12].x*640), int(i.landmark[12].y*480)
-				y9  = int(i.landmark[9].y*480)
-				if index_raised(yi, y9):
-					cv2.circle(frm, (x, y), 30, (0,0,0), -1)
-					cv2.circle(mask, (x, y), 30, 255, -1)
-
-
-
-	op = cv2.bitwise_and(frm, frm, mask=mask)
-	frm[:, :, 1] = op[:, :, 1]
-	frm[:, :, 2] = op[:, :, 2]
-
-	frm[:max_y, ml:max_x] = cv2.addWeighted(tools, 0.7, frm[:max_y, ml:max_x], 0.3, 0)
-
-	cv2.putText(frm, curr_tool, (270+ml,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
-	cv2.imshow("paint app", frm)
-
-	if cv2.waitKey(1) == 27:
-		cv2.destroyAllWindows()
-		cap.release()
-		break
+    if cv2.waitKey(1) == ord('q'):
+        break
+cap.release()
+cv2.destroyAllWindows()

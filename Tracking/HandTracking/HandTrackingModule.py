@@ -47,8 +47,8 @@ class handDetector():
                 #Append the location(using the pixels) with the ID of the landmarks
                 lmList.append([id, cx, cy])
                 #Draw a circle on each landmark of the hands
-                if draw:
-                    cv2.circle(img, (cx, cy), 15, (255, 0, 0), cv2.FILLED)
+                # if draw:
+                #     cv2.circle(img, (cx, cy), 15, (255, 0, 0), cv2.FILLED)
         #Return the landmark list.
         return lmList
 

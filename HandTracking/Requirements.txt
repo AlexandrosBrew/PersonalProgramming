@@ -1,0 +1,5 @@
+Requirements:
+    open-cv
+    mediapipe
+    tensorflow
+    numpy

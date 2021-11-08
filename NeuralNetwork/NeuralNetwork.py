@@ -75,20 +75,8 @@ class NeuralNetwork:
                     cumulative_errors.append(cumulative_error)
 
             return cumulative_errors
-
-input_vectors = np.array(
-     [
-        [3, 1.5],
-        [2, 1],
-        [4, 1.5],
-        [3, 4],
-        [3.5, 0.5],
-        [2, 0.5],
-        [5.5, 1],
-        [1, 1],
-    ]
-)        
-def main():
+   
+def main(input_vectors):
     targets = np.array([0, 1, 0, 1, 0, 1, 1, 0])
     learning_rate = 0.1
     neuralnet = NeuralNetwork(learning_rate)

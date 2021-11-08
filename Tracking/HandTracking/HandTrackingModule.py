@@ -16,7 +16,7 @@ class handDetector():
         self.mpDraw = mp.solutions.drawing_utils
     
     #Locate the hands on the capture and draw the connections.
-    def findHands(self, img, draw = True):
+    def findHands(self, img, draw=False):
             
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(imgRGB)
@@ -77,8 +77,6 @@ def main():
         cv2.putText(img, str(int(fps)), (10,70), cv2.FONT_HERSHEY_COMPLEX, 3, (255,255,255), 3)
         cv2.imshow("Image", img)
         cv2.waitKey(1)
-
-
 
 
 if __name__ == "__main__":

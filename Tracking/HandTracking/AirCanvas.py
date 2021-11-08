@@ -12,7 +12,6 @@ width = int(cap.get(3))
 height = int(cap.get(4))
 canvas = np.zeros((height, width, 3), np.uint8)
 
-
 lower_bound = np.array([50,100,100])
 upper_bound = np.array([90,255,255])
 kernel = np.ones((10,10), np.uint8)
@@ -27,26 +26,24 @@ while True:
 	if len(lmList) > 0:
 		cX = lmList[8][1]
 		cY = lmList[8][2]
-		cv2.circle(frame, (cX, cY), 15, (255, 255, 255), cv2.FILLED)
-	
-		if previous_center_point == 0:
-			if cY < 65:
-				if cX > 10 and cX < 120:
-					canvas = np.zeros((height, width, 3), np.uint8)
-				elif cX > 140 and cX < 230:
-					color = colors[0]
-				elif cX > 240 and cX < 330:
-					color = colors[1]
-				elif cX > 340 and cX < 430:
-					color = colors[2]
-				elif cX > 440 and cX < 530:
-					color = colors[3]
-				elif cX > 540 and cX < 630:
-					color = colors[4]
-				elif cX > 640 and cX < 780:
-					return_val, image = cap.read()
-					cv2.imwrite('screenshot'+str(i+1)+'.png', canvas)
-					i+=1
+		cv2.circle(frame, (cX, cY), 15, color, cv2.FILLED)
+		if cY < 65:
+			if cX > 10 and cX < 120:
+				canvas = np.zeros((height, width, 3), np.uint8)
+			elif cX > 140 and cX < 230:
+				color = colors[0]
+			elif cX > 240 and cX < 330:
+				color = colors[1]
+			elif cX > 340 and cX < 430:
+				color = colors[2]
+			elif cX > 440 and cX < 530:
+				color = colors[3]
+			elif cX > 540 and cX < 630:
+				color = colors[4]
+			elif cX > 640 and cX < 780:
+				return_val, image = cap.read()
+				cv2.imwrite('screenshot'+str(i+1)+'.png', canvas)
+				i+=1
 
 		if previous_center_point != 0:
 			cv2.line(canvas, previous_center_point, (cX, cY), color, 2)

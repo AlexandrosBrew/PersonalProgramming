@@ -4,13 +4,14 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
+
 mpHands = mp.solutions.hands
 hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 mpDraw = mp.solutions.drawing_utils
 
-model = load_model('/Users/alexandrosbrew/Documents/PersonalProgramming/Tracking/HandGesture/mp_hand_gesture')
+model = load_model('/Users/alexandrosbrew/Documents/PersonalProgramming/Tracking/HandTracking/HandGesture/mp_hand_gesture')
 
-f = open('/Users/alexandrosbrew/Documents/PersonalProgramming/Tracking/HandGesture/gesture.names', 'r')
+f = open('/Users/alexandrosbrew/Documents/PersonalProgramming/Tracking/HandTracking/HandGesture/gesture.names', 'r')
 classNames = f.read().split('\n')
 f.close
 print(classNames)
@@ -52,3 +53,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+

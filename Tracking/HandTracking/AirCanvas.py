@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import HandTrackingModule as htm
+import GestureTrackingModule as gtm
+
 
 i = 0
 colors = [(255, 0, 0), (255, 0, 255), (0, 255, 0), (0, 0, 255), (0, 255, 255)]
@@ -8,9 +10,11 @@ color = colors[0]
 
 cap = cv2.VideoCapture(0)
 detector = htm.handDetector()
+gesture = gtm.GestureTracking()
 width = int(cap.get(3))
 height = int(cap.get(4))
 canvas = np.zeros((height, width, 3), np.uint8)
+model, f, classNames = gesture.getModel()
 
 lower_bound = np.array([50,100,100])
 upper_bound = np.array([90,255,255])
@@ -19,10 +23,10 @@ previous_center_point = 0
 
 while True:
 	success, frame = cap.read()
-	frame = cv2.flip(frame, 1)
 	img = detector.findHands(frame)
 	lmList = detector.findPosition(img, draw=True)
-
+	className = gesture.getClassName(frame, model)
+	print(className)
 	if len(lmList) > 0:
 		cX = lmList[8][1]
 		cY = lmList[8][2]
@@ -45,7 +49,7 @@ while True:
 				cv2.imwrite('screenshot'+str(i+1)+'.png', canvas)
 				i+=1
 
-		if previous_center_point != 0:
+		if previous_center_point != 0 and className != "fist" and className != "rock" and className != "call me":
 			cv2.line(canvas, previous_center_point, (cX, cY), color, 2)
 		previous_center_point = (cX, cY)
 	else:

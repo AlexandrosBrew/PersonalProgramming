@@ -23,6 +23,7 @@ previous_center_point = 0
 
 while True:
 	success, frame = cap.read()
+	frame = cv2.flip(frame, 1)
 	img = detector.findHands(frame)
 	lmList = detector.findPosition(img, draw=True)
 	className = gesture.getClassName(frame, model)

@@ -5,7 +5,7 @@ import time
 
 class handDetector():
     #Initlising the parameters used in the Hand module in mediapipe
-    def __init__(self, mode = False, maxHands = 4, detectionCon = 0.5, trackCon = 0.5):
+    def __init__(self, mode = False, maxHands = 1, detectionCon = 0.5, trackCon = 0.5):
         self.mode = mode
         self.maxHands = maxHands
         self.detectionCon = detectionCon
@@ -31,7 +31,7 @@ class handDetector():
         return img
                 
     #Find the exact position of each landmark
-    def findPosition(self, img, handNum = 0, draw = True):
+    def findPosition(self, img, handNum, draw = True):
         lmList = []
         #Check if there are multiple points on the video capture
         if self.results.multi_hand_landmarks:

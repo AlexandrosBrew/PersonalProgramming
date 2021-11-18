@@ -1,0 +1,6 @@
+pawn = 1
+king = 4
+queen = 9
+bishop = 3
+horse = 3
+rook = 5

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 class NeuralNetwork:
     def __init__(self, learning_rate):
@@ -77,7 +78,11 @@ class NeuralNetwork:
             return cumulative_errors
 
 def main(input_vectors):
-    targets = np.array([0, 1, 0, 1, 0, 1, 1, 0])
+
+    rand1 = random.randrange(0, 10)
+    rand2 = random.randrange(0, 10)
+
+    input_vectors = np.array([rand1, rand2])
     learning_rate = 0.1
     neuralnet = NeuralNetwork(learning_rate)
     trainingerr = neuralnet.train(input_vectors, targets, 100000)

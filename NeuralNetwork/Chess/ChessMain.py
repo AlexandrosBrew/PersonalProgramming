@@ -1,3 +1,4 @@
+from logging.handlers import QueueListener
 import pygame as py
 from pygame.image import load
 import ChessEngine
@@ -24,11 +25,27 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()
     running = True
+    sqSelected = ()
+    playerClicks = []  
 
     while running:
         for event in py.event.get():
             if event.type == py.QUIT:
                 running = False
+            elif event.type() == py.MOUSEBUTTONDOWN:
+                location = py.mouse.get_pos()
+                col = location[0]//SQ_SIZE
+                row = location[1]//SQ_SIZE
+                if sqSelected == ():
+                    sqSelected = ()
+                    playerClicks = []
+                else:
+                    sqSelected = (row, col)
+                    playerClicks.append(sqSelected)
+                if len(playerClicks) == 2:
+                    
+
+
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         py.display.flip()

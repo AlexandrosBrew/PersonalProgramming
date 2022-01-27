@@ -77,7 +77,7 @@ class NeuralNetwork:
 
             return cumulative_errors
 
-def main(input_vectors):
+def main():
     input_vectors = [] #!([1.5, 4], [3, 5], [8,0.5], [12, 3], [4,6], [.30,1], [9.8, 2], [10, 3.4])
 
     for y in range(0, 10):

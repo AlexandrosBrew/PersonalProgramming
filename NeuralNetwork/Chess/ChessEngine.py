@@ -12,7 +12,12 @@ class GameState():
         ]
         self.whiteToMove = True
         self.moveLog = []
-
+    def makeMove(self, move):
+        self.board[move.startRow][move.startCol] = '--'
+        self.board[move.endRow][move.endCol] = move.pieceMoved
+        self.moveLog.append(move)
+        self.whiteToMove = not self.whiteToMove
+         
 class Move():
     ranksToRows = {"1":7,"2":6,"3":5,"4":4,"5":3,"6":2,"7":1,"8":0}
     rowsToRanks = {v: k for k, v in ranksToRows.items()}
@@ -26,3 +31,9 @@ class Move():
          self.endCol = endsq[1]
          self.pieceMoved = board[self.startRow][self.startCol]
          self.pieceCaptured = board[self.endRow][self.endCol]
+    
+    def getChessNotation(self):
+        return self.getRanktoFiles(self.startRow, self.startCol) + self.getRanktoFiles(self.endRow, self.endCol)
+    
+    def getRanktoFiles(self, r, c):
+        return self.colsToFiles[c] + self.rowsToRanks[r]

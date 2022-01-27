@@ -33,7 +33,6 @@ def main():
             if event.type == py.QUIT:
                 running = False
             elif event.type == py.MOUSEBUTTONDOWN:
-                print(playerClicks)
                 location = py.mouse.get_pos()
                 col = location[0]//SQ_SIZE
                 row = location[1]//SQ_SIZE
@@ -45,7 +44,7 @@ def main():
                     playerClicks.append(sqSelected)
                 if len(playerClicks) == 2:
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    print(move.getChessNotation)
+                    print(move.getChessNotation())
                     gs.makeMove(move)
                     sqSelected, playerClicks = (), []
             elif event.type == py.KEYDOWN:

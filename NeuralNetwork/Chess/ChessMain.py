@@ -32,11 +32,12 @@ def main():
         for event in py.event.get():
             if event.type == py.QUIT:
                 running = False
-            elif event.type() == py.MOUSEBUTTONDOWN:
+            elif event.type == py.MOUSEBUTTONDOWN:
+                print(playerClicks)
                 location = py.mouse.get_pos()
                 col = location[0]//SQ_SIZE
                 row = location[1]//SQ_SIZE
-                if sqSelected == ():
+                if sqSelected == (row, col):
                     sqSelected = ()
                     playerClicks = []
                 else:

@@ -48,6 +48,9 @@ def main():
                     print(move.getChessNotation)
                     gs.makeMove(move)
                     sqSelected, playerClicks = (), []
+            elif event.type == py.KEYDOWN:
+                if event.key == py.K_u:
+                    gs.undoMove()
 
 
         drawGameState(screen, gs)

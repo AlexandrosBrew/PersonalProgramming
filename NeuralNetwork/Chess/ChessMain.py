@@ -30,9 +30,8 @@ def main():
 
     while running:
         for event in py.event.get():
-            if event.type == py.QUIT or event.type == py.KEYDOWN:
-                if event.key == py.K_q:
-                    running = False
+            if event.type == py.QUIT:
+                running = False    
             elif event.type == py.MOUSEBUTTONDOWN:
                 location = py.mouse.get_pos()
                 col = location[0]//SQ_SIZE
@@ -51,6 +50,8 @@ def main():
             elif event.type == py.KEYDOWN:
                 if event.key == py.K_u:
                     gs.undoMove()
+                if event.key == py.K_q:
+                    running = False
 
 
         drawGameState(screen, gs)

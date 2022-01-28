@@ -30,8 +30,9 @@ def main():
 
     while running:
         for event in py.event.get():
-            if event.type == py.QUIT:
-                running = False
+            if event.type == py.QUIT or event.type == py.KEYDOWN:
+                if event.key == py.K_q:
+                    running = False
             elif event.type == py.MOUSEBUTTONDOWN:
                 location = py.mouse.get_pos()
                 col = location[0]//SQ_SIZE

@@ -31,6 +31,7 @@ class GameState():
     def getAllPossibleMoves(self):
         pass
 
+
 class Move():
     ranksToRows = {"1":7,"2":6,"3":5,"4":4,"5":3,"6":2,"7":1,"8":0}
     rowsToRanks = {v: k for k, v in ranksToRows.items()}
@@ -38,12 +39,12 @@ class Move():
     colsToFiles = {v: k for k, v in filesToCols.items()}
 
     def __init__(self, startsq, endsq, board):
-         self.startRow = startsq[0]
-         self.startCol = startsq[1]
-         self.endRow = endsq[0]
-         self.endCol = endsq[1]
-         self.pieceMoved = board[self.startRow][self.startCol]
-         self.pieceCaptured = board[self.endRow][self.endCol]
+        self.startRow = startsq[0]
+        self.startCol = startsq[1]
+        self.endRow = endsq[0]
+        self.endCol = endsq[1]
+        self.pieceMoved = board[self.startRow][self.startCol]
+        self.pieceCaptured = board[self.endRow][self.endCol]
     
     def getChessNotation(self):
         return self.getRanktoFiles(self.startRow, self.startCol) + self.getRanktoFiles(self.endRow, self.endCol)

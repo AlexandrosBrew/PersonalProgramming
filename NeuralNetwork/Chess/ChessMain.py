@@ -1,6 +1,4 @@
-from logging.handlers import QueueListener
 import pygame as py
-from pygame.image import load
 import ChessEngine
 
 WIDTH = HEIGHT = 512

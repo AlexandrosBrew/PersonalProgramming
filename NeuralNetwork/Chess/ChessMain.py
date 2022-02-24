@@ -1,3 +1,4 @@
+from numpy import true_divide
 import pygame as py
 import ChessEngine
 
@@ -22,6 +23,9 @@ def main():
     screen.fill(WHITE)
     gs = ChessEngine.GameState()
     loadImages()
+    validMoves = gs.getValidMoves()
+    moveMade = False
+
     running = True
     sqSelected = ()
     playerClicks = []  
@@ -43,15 +47,21 @@ def main():
                 if len(playerClicks) == 2:
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
                     print(move.getChessNotation())
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        moveMade = True
                     gs.makeMove(move)
                     sqSelected, playerClicks = (), []
             elif event.type == py.KEYDOWN:
                 if event.key == py.K_u:
                     gs.undoMove()
+                    moveMade = True
                 if event.key == py.K_q:
                     running = False
 
-
+        if moveMade:
+            validMoves = gs.getValidMoves()
+            moveMade = False 
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         py.display.flip()

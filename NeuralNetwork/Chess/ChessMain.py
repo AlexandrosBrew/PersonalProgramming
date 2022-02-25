@@ -1,4 +1,3 @@
-from numpy import true_divide
 import pygame as py
 import ChessEngine
 

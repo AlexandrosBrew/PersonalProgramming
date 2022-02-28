@@ -1,5 +1,6 @@
 import pygame as py
 import ChessEngine
+import os
 
 WIDTH = HEIGHT = 512
 DIMENSION = 8
@@ -9,11 +10,14 @@ IMAGES = {}
 WHITE = [255, 255, 255]
 LIGHT_GRAY = [211, 211, 211]
 GRAY = [128, 128, 128]
+cdir = os.getcwd()
+print(cdir)
+
 def loadImages():
     pieces = ["wp", "wR", "wN", "wB", "wK", "wQ", "bp", "bR", "bN", "bB", "bK", "bQ"]
     for piece in pieces:
-        print("/Users/alexandrosbrew/Documents/PersonalProgramming/NeuralNetwork/Chess/ChessPieces/" + piece + ".png")
-        IMAGES[piece] = py.image.load("/Users/alexandrosbrew/Documents/PersonalProgramming/NeuralNetwork/Chess/ChessPieces/" + piece + ".png", str((SQ_SIZE, SQ_SIZE)))
+        print(cdir+"/NeuralNetwork/Chess/ChessPieces/" + piece + ".png")
+        IMAGES[piece] = py.image.load(cdir+"/NeuralNetwork/Chess/ChessPieces/" + piece + ".png", str((SQ_SIZE, SQ_SIZE)))
     
 def main():
     py.init()

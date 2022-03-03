@@ -11,7 +11,7 @@ WHITE = [255, 255, 255]
 LIGHT_GRAY = [211, 211, 211]
 GRAY = [128, 128, 128]
 cdir = os.getcwd()
-print(cdir)
+
 
 def loadImages():
     pieces = ["wp", "wR", "wN", "wB", "wK", "wQ", "bp", "bR", "bN", "bB", "bK", "bQ"]

@@ -1,13 +1,13 @@
 import pygame as py
 import os
 
+cdir = os.getcwd()
 FPS, WHITE, BLACK, WIDTH, HEIGHT, VEL = 60, (255, 255, 255), (0, 0, 0), 900, 500, 5
 SS_WIDTH, SS_HEIGHT = 55, 40
-
-YELLOW_SS_IMG = py.image.load(os.path.join('/Users/alexandrosbrew/Documents/PersonalProgramming/Pygame/Assets/spaceship_yellow.png'))
+YELLOW_SS_IMG = py.image.load(cdir + '/Pygame/Assets/spaceship_yellow.png')
 YELLOW_SS_IMG = py.transform.scale(YELLOW_SS_IMG, (SS_WIDTH, SS_HEIGHT))
 YELLOW_SS_IMG = py.transform.rotate(YELLOW_SS_IMG, -90)
-RED_SS_IMG = py.image.load(os.path.join('/Users/alexandrosbrew/Documents/PersonalProgramming/Pygame/Assets/spaceship_red.png')) 
+RED_SS_IMG = py.image.load(cdir + '/Pygame/Assets/spaceship_red.png')
 RED_SS_IMG = py.transform.scale(RED_SS_IMG, (SS_WIDTH, SS_HEIGHT))
 RED_SS_IMG = py.transform.rotate(RED_SS_IMG, 90)
 
@@ -30,7 +30,7 @@ def r_move(keys_pressed, red):
     if keys_pressed[py.K_s]: red.y += VEL #Down
 
 def y_move(keys_pressed, yellow):
-    if keys_pressed[py.K_LEFT] and yellow.x + VEL + yellow.width < BORDER.x: yellow.x -= VEL #Left
+    if keys_pressed[py.K_LEFT] and yellow.x + VEL + yellow.width > BORDER.x: yellow.x -= VEL #Left
     if keys_pressed[py.K_RIGHT] and yellow.x - VEL > 0: yellow.x += VEL #Right
     if keys_pressed[py.K_UP] and yellow.y - VEL > 0: yellow.y -= VEL #Up
     if keys_pressed[py.K_DOWN] and yellow.y + VEL + yellow.height < HEIGHT: yellow.y += VEL #Down

@@ -31,10 +31,9 @@ def r_move(keys_pressed, red):
 
 def y_move(keys_pressed, yellow):
     if keys_pressed[py.K_LEFT] and yellow.x + VEL + yellow.width > BORDER.x: yellow.x -= VEL #Left
-    if keys_pressed[py.K_RIGHT] and yellow.x - VEL > 0: yellow.x += VEL #Right
+    if keys_pressed[py.K_RIGHT] and yellow.x - VEL >0: yellow.x += VEL #Right
     if keys_pressed[py.K_UP] and yellow.y - VEL > 0: yellow.y -= VEL #Up
     if keys_pressed[py.K_DOWN] and yellow.y + VEL + yellow.height < HEIGHT: yellow.y += VEL #Down
-    
 
 def main():
     red = py.Rect(100, 300, SS_WIDTH, SS_HEIGHT)
@@ -47,7 +46,6 @@ def main():
         for event in py.event.get():
             if event.type == py.QUIT:
                 run = False
-
         keys_pressed = py.key.get_pressed()
         r_move(keys_pressed, red)
         y_move(keys_pressed, yellow)

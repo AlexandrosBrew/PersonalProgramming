@@ -16,7 +16,6 @@ cdir = os.getcwd()
 def loadImages():
     pieces = ["wp", "wR", "wN", "wB", "wK", "wQ", "bp", "bR", "bN", "bB", "bK", "bQ"]
     for piece in pieces:
-        print(cdir+"/NeuralNetwork/Chess/ChessPieces/" + piece + ".png")
         IMAGES[piece] = py.image.load(cdir+"/NeuralNetwork/Chess/ChessPieces/" + piece + ".png", str((SQ_SIZE, SQ_SIZE)))
     
 def main():

@@ -1,0 +1,14 @@
+/* 
+#id --> selects the element with the id
+.class --> slects all elements in the class
+element.class --> selects the element in the class
+"*" --> selects all elements */
+
+body {
+    background-color: lightblue;
+}
+
+h1 {
+    color: navy;
+    margin-left: 20px;
+}

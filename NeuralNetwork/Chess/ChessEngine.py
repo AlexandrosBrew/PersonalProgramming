@@ -24,7 +24,7 @@ class GameState():
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
-    
+
     def getValidMoves(self):
         return self.getAllPossibleMoves()
 
@@ -47,12 +47,13 @@ class GameState():
                 moves.append(Move((r, c), (r-1, c), self.board))
                 if r == 6 and self.board[r-2][c] == "--":
                     moves.append(Move((r, c), (r-2, c), self.board))
-            if c-1  >= 0:
+            if c-1 >= 0:
                     if self.board[r-1][c][0] == 'b':
                         moves.append(Move((r-1, c-1), (r-1, c-1), self.board))
             if c+1 <= 7:
                 if self.board[r-1][c+1][0] == 'b':
                     moves.append(Move((r-1, c+1), (r-1, c+1), self.board))
+
     def getRookMoves(self, r, c, moves):
         pass
 
